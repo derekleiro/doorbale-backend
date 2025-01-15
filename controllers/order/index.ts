@@ -19,12 +19,4 @@ export async function getOrder(req: Request, res: Response, next: NextFunction) 
         authToken,
     } = req.body;
 
-    await errorHandler(
-        [orderType, customerAge, customerHeight, customerSize, testScores, styleReferences, clothingTypes],
-        res,
-        next,
-        () => {
-            // process order logic
-        })
-
 }
