@@ -1,8 +1,9 @@
 {
   "scripts": {
     "build": "yarn tsc",
-    "start": "nodemon app.ts",
-    "dev": "yarn tsc --watch"
+    "start": "yarn ts-node app.ts",
+    "dev": "nodemon app.ts",
+    "dev2": "yarn tsc --watch"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
