@@ -11,6 +11,7 @@ class Response {
                 body,
             });
         };
+        // TODO: Add a logger
         this.res = this._res;
         this._res = res;
     }

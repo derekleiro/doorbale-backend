@@ -49,6 +49,11 @@ const OrderSchema = new mongoose_1.Schema({
             quantity_sold: Number,
         },
     ],
+    kids_clothing: [{
+            gender: { type: String, required: true },
+            age: { type: String, required: true },
+            clothes_needed: [{ type: mongoose_1.Types.ObjectId, ref: 'ClothingType', required: true }],
+        }],
     number_of_clothes: Number,
     total_items_purchased: Number,
     payment_reference: String,

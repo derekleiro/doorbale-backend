@@ -1,8 +1,9 @@
 {
   "scripts": {
     "build": "yarn tsc",
-    "start": "yarn ts-node app.ts",
+    "dev3": "yarn ts-node app.ts",
     "dev": "nodemon app.ts",
+    "start": "nodemon dist/app.js",
     "dev2": "yarn tsc --watch"
   },
   "devDependencies": {

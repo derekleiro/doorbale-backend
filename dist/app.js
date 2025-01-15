@@ -43,6 +43,12 @@ const fs_1 = __importDefault(require("fs"));
 const util_1 = __importDefault(require("util"));
 const response_1 = require("./models/response");
 const mongoose = __importStar(require("mongoose"));
+const express_2 = require("@clerk/express");
+const session_1 = __importDefault(require("./routes/session"));
+const clothing_type_1 = __importDefault(require("./routes/clothing_type"));
+const question_1 = __importDefault(require("./routes/question"));
+const auth_1 = __importDefault(require("./routes/auth"));
+const http_error_1 = __importDefault(require("./models/http-error"));
 require("dotenv").config();
 // Logging write stream
 const logFile = fs_1.default.createWriteStream("app.log", { flags: "a" });
@@ -62,6 +68,11 @@ const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
 app.use(express_1.default.json());
+app.use((0, express_2.clerkMiddleware)());
+app.use("/api/", session_1.default);
+app.use("/api/", clothing_type_1.default);
+app.use("/api/", question_1.default);
+app.use("/api/", auth_1.default);
 app.use((req, res, next) => {
     try {
         res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_SERVER);
@@ -73,7 +84,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use((req, res, next) => {
-    throw new HttpError("Could not find this route");
+    throw new http_error_1.default("Could not find this route");
 });
 app.use((error, req, res, next) => {
     if (res.headerSent) {
@@ -81,11 +92,12 @@ app.use((error, req, res, next) => {
     }
     new response_1.Response(res).json(error.code || 500, error.message || "An unknown error has occurred", null);
 });
+const PORT = process.env.PORT || 4000;
 mongoose
     .connect(process.env.MONGODB_URI)
     .then((result) => {
-    app.listen(process.env.PORT, () => {
-        console.log(`Server is running at ${process.env.PORT}`);
+    app.listen(PORT, () => {
+        console.log(`Server is running at ${PORT}`);
     });
 })
     .catch((e) => {

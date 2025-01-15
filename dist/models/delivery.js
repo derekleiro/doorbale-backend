@@ -37,12 +37,11 @@ const mongoose_1 = __importStar(require("mongoose"));
 const types_1 = require("./types");
 const date_fns_tz_1 = require("date-fns-tz");
 const DeliverySchema = new mongoose_1.Schema({
-    location: String,
-    landmark: String,
+    address: { type: String, required: true },
     area: { type: String, enum: Object.values(types_1.Area), required: true },
     coordinates: {
         lat: Number,
-        long: Number,
+        lng: Number,
     },
     customer_id: { type: mongoose_1.Types.ObjectId, ref: 'Customer', required: true },
     last_updated: { type: Date, default: (0, date_fns_tz_1.toZonedTime)(new Date(), "Africa/Nairobi") },

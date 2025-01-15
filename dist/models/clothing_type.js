@@ -35,10 +35,12 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const ClothingTypeSchema = new mongoose_1.Schema({
-    name: { type: String, required: true },
-    total_available: { type: Number, required: true, default: 0 },
-    reference_image: String,
-    selling_price: { type: Number, required: true },
+    total_available: { type: Number, default: 0 },
+    title: { type: String, required: true },
+    gender: { type: String, enum: ["male", "female"], required: true },
+    type: { type: String, enum: ["adult", "kids"], required: true },
+    image: String,
     purchase_price: { type: Number, required: true },
+    selling_price: { type: Number, required: true },
 });
 exports.default = mongoose_1.default.model('ClothingType', ClothingTypeSchema);

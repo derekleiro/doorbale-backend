@@ -8,31 +8,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorHandler = errorHandler;
-function errorHandler(checks, uid, token, next, callback) {
+const response_1 = require("../models/response");
+const session_1 = __importDefault(require("../models/session"));
+function errorHandler(checks, res, req, next, callback, sessionId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            for (let check of checks) {
-                if (!check) {
-                    const error = new HttpError("Invalid request");
-                    return next(error);
+            if (sessionId) {
+                if (req.params.sessionId === undefined || req.params.sessionId === null) {
+                    return new response_1.Response(res).json(400, "SessionId not provided", null);
+                }
+                const session = yield session_1.default.findOne({ sessionId: req.params.sessionId });
+                if (session === null) {
+                    return new response_1.Response(res).json(404, "Session not found", null);
                 }
             }
-            //let _uid = await verifyIdToken(token, next);
-            let _uid = "123456";
-            if (uid === _uid) {
-                callback();
+            for (let check of checks) {
+                if (!check) {
+                    return new response_1.Response(res).json(400, "Invalid request", null);
+                }
             }
-            else {
-                const error = new HttpError("Unauthorized");
-                return next(error);
-            }
+            callback();
         }
         catch (e) {
-            const error = new HttpError(`${e}`);
-            return next(error);
+            return new response_1.Response(res).json(500, e.toString(), null);
         }
     });
 }
-;
