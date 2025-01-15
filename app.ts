@@ -65,12 +65,13 @@ app.use((error: any, req: any, res: any, next: any) => {
     }
     new Response(res).json(error.code || 500, error.message || "An unknown error has occurred", null);
 });
+const PORT = process.env.PORT || 4000
 
 mongoose
     .connect(process.env.MONGODB_URI!)
     .then((result) => {
-        app.listen(process.env.PORT, () => {
-            console.log(`Server is running at ${process.env.PORT}`);
+        app.listen(PORT, () => {
+            console.log(`Server is running at ${PORT}`);
         });
     })
     .catch((e) => {
